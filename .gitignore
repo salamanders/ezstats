@@ -229,7 +229,7 @@ tmp/
 .apt_generated/
 
 # Scala IDE specific (Scala & Java development for Eclipse)
-.cache-main
+.cache-info.benjaminhill.stats.main
 .scala_dependencies
 .worksheet
 

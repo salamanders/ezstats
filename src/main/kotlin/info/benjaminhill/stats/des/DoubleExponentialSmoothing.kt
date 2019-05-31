@@ -15,7 +15,7 @@ import info.benjaminhill.stats.pso.PSOSwarm
  * @return Instance of model that can be used to get current smoothed value and forecast future values
  *
  */
-class DoubleExponentialSmoothing(val alpha: Float = 0.3f, val beta: Float = 0.4f) {
+class DoubleExponentialSmoothing(private val alpha: Float = 0.3f, private val beta: Float = 0.4f) {
     init {
         require(alpha in 0.0..1.0)
         require(beta in 0.0..1.0)
@@ -63,6 +63,7 @@ class DoubleExponentialSmoothing(val alpha: Float = 0.3f, val beta: Float = 0.4f
 
     companion object {
 
+        /** Run once on a big window of data if you want a better alpha & beta than the default */
         fun estimateAlphaBeta(data: DoubleArray): Pair<Double, Double> {
 
             val f = OptimizableFunction(
@@ -85,7 +86,7 @@ class DoubleExponentialSmoothing(val alpha: Float = 0.3f, val beta: Float = 0.4f
                         }
                     }
                 }
-                doubleArrayOf(sumOfSquaredErrors.toDouble())
+                sumOfSquaredErrors.toDouble()
             }
 
             val desPsoCalibration = PSOSwarm(

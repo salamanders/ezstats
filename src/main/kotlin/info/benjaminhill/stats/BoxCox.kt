@@ -9,7 +9,7 @@ import java.util.*
 /**
  * Box Cox Transformation
  *
- * From https://raw.githubusercontent.com/navdeep-G/exp-smoothing-java/master/src/main/java/transform/BoxCox.java
+ * From https://raw.githubusercontent.com/navdeep-G/exp-smoothing-java/master/src/
  * @author navdeepgill
  */
 object BoxCox {
@@ -68,3 +68,6 @@ object BoxCox {
         return result.standardDeviation() / result.average()
     }
 }
+
+
+fun List<Double>.boxCox(): List<Double> = BoxCox.transform(this)

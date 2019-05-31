@@ -39,15 +39,15 @@ internal class Particle(
      */
     fun updatePersonalBest() {
         val currentEval = function.eval(position.getData())
-        if (currentEval.sum() < bestEval) {
+        if (currentEval < bestEval) {
             bestPosition.set(position)
-            bestEval = currentEval.sum()
+            bestEval = currentEval
         }
     }
 
     /**
      *
-     * @param globalBest + socialC move towards this
+     * @param globalBestPosition + socialC move towards this
      */
     fun updateVelocityAndPosition(globalBestPosition: Vector) {
         // Natural friction

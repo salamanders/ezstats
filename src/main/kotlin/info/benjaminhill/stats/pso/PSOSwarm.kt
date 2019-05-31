@@ -18,7 +18,7 @@ import mu.KotlinLogging
  */
 class PSOSwarm(
     private val function: OptimizableFunction,
-    private val numOfParticles: Int = function.parameterBounds.size * 10 + 15,
+    private val numOfParticles: Int = function.parameterBounds.size * 5 + 10,
     private val maxEpochs: Int = 1_000 * function.parameterBounds.size,
     inertiaC: Double = 0.729844,
     cognitiveC: Double = 1.496180,

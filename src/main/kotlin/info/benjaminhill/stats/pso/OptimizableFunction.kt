@@ -15,12 +15,12 @@ import kotlin.random.Random
  */
 open class OptimizableFunction(
     val parameterBounds: Array<ClosedFloatingPointRange<Double>>,
-    private val f: (data: DoubleArray) -> DoubleArray
+    private val f: (data: DoubleArray) -> Double
 ) {
     /** Default to -100..100 bounds */
     constructor(
         numParameters: Int,
-        f: (data: DoubleArray) -> DoubleArray
+        f: (data: DoubleArray) -> Double
     ) : this(Array(numParameters) { (-100.0).rangeTo(100.0) }, f)
 
     private fun validate(params: DoubleArray): Boolean {
@@ -32,12 +32,11 @@ open class OptimizableFunction(
         return true
     }
 
-    fun eval(params: DoubleArray): DoubleArray {
+    fun eval(params: DoubleArray): Double {
         require(params.size == parameterBounds.size)
+        // TODO: curve the error as you get near a boundary
         if (!validate(params)) {
-            return DoubleArray(1) {
-                Double.POSITIVE_INFINITY
-            }
+            Double.POSITIVE_INFINITY
         }
         return f(params)
     }
