@@ -1,5 +1,6 @@
 package info.benjaminhill.stats.pso
 
+import info.benjaminhill.stats.Vector
 import kotlin.random.Random
 
 /**
@@ -15,15 +16,15 @@ import kotlin.random.Random
  */
 open class OptimizableFunction(
     val parameterBounds: Array<ClosedFloatingPointRange<Double>>,
-    private val f: (data: DoubleArray) -> Double
+    private val f: (data: Vector) -> Double
 ) {
     /** Default to -100..100 bounds */
     constructor(
         numParameters: Int,
-        f: (data: DoubleArray) -> Double
+        f: (data: Vector) -> Double
     ) : this(Array(numParameters) { (-100.0).rangeTo(100.0) }, f)
 
-    private fun validate(params: DoubleArray): Boolean {
+    private fun validate(params: Vector): Boolean {
         params.forEachIndexed { idx, v ->
             if (v !in parameterBounds[idx]) {
                 return false
@@ -32,7 +33,7 @@ open class OptimizableFunction(
         return true
     }
 
-    fun eval(params: DoubleArray): Double {
+    fun eval(params: Vector): Double {
         require(params.size == parameterBounds.size)
         // TODO: curve the error as you get near a boundary
         if (!validate(params)) {

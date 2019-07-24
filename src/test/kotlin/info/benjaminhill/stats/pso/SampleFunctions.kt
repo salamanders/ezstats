@@ -1,12 +1,11 @@
 package info.benjaminhill.stats.pso
 
+import kotlin.math.cos
+import kotlin.math.exp
+import kotlin.math.pow
+import kotlin.math.sqrt
+
 internal object SampleFunctions {
-
-    private val DoubleArray.x: Double
-        get() = this[0]
-
-    private val DoubleArray.y: Double
-        get() = this[1]
 
     val badSlope by lazy {
         OptimizableFunction(
@@ -27,7 +26,7 @@ internal object SampleFunctions {
      */
     val functionA by lazy {
         OptimizableFunction(1) {
-            Math.pow(it.x, 4.0) - 2 * Math.pow(it.x, 3.0)
+            it.x.pow(4.0) - 2 * it.x.pow(3.0)
         }
     }
     val functionAAnswer = doubleArrayOf(1.5)
@@ -44,8 +43,8 @@ internal object SampleFunctions {
                 (-15.0).rangeTo(15.0)
             )
         ) {
-            val p1 = -20 * Math.exp(-0.2 * Math.sqrt(0.5 * (it.x * it.x + it.y * it.y)))
-            val p2 = Math.exp(0.5 * (Math.cos(2.0 * Math.PI * it.x) + Math.cos(2.0 * Math.PI * it.y)))
+            val p1 = -20 * exp(-0.2 * sqrt(0.5 * (it.x * it.x + it.y * it.y)))
+            val p2 = exp(0.5 * (cos(2.0 * Math.PI * it.x) + cos(2.0 * Math.PI * it.y)))
             p1 - p2 + Math.E + 20.0
         }
     }
@@ -65,8 +64,8 @@ internal object SampleFunctions {
                 (-1500000.0).rangeTo(1500000.0)
             )
         ) {
-            val p1 = Math.pow(it.x + 2 * it.y - 7, 2.0)
-            val p2 = Math.pow(2 * it.x + it.y - 5, 2.0)
+            val p1 = (it.x + 2 * it.y - 7).pow(2.0)
+            val p2 = (2 * it.x + it.y - 5).pow(2.0)
             p1 + p2
         }
     }
@@ -75,8 +74,8 @@ internal object SampleFunctions {
     val threeHumpCamelFunction by lazy {
         OptimizableFunction(2) {
             val p1 = 2.0 * it.x * it.x
-            val p2 = 1.05 * Math.pow(it.x, 4.0)
-            val p3 = Math.pow(it.x, 6.0) / 6
+            val p2 = 1.05 * it.x.pow(4.0)
+            val p3 = it.x.pow(6.0) / 6
             p1 - p2 + p3 + it.x * it.y + it.y * it.y
         }
     }

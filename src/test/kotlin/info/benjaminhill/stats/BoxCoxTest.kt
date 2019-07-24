@@ -1,5 +1,7 @@
 package info.benjaminhill.stats
 
+import info.benjaminhill.stats.preprocess.BoxCox
+import info.benjaminhill.stats.preprocess.boxCox
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import kotlin.test.Test

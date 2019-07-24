@@ -1,4 +1,4 @@
-package info.benjaminhill.stats
+package info.benjaminhill.stats.preprocess
 
 import org.nield.kotlinstatistics.percentile
 

@@ -1,5 +1,6 @@
 package info.benjaminhill.stats.pso
 
+import info.benjaminhill.stats.Vector
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -9,11 +10,11 @@ import mu.KotlinLogging
 /**
  * Represents a swarm of particles from the Particle PSOSwarm Optimization algorithm.
  * @param function the OptimizableFunction to find the minimum *starting* within the parameterBounds
- * @param numOfParticles the number of particles to create, default to 30 * dimensions
+ * @param numOfParticles the number of particles to create, default to reasonable number based on number of dimensions
  * @param maxEpochs upper bound on number of generations, default to 1k * dimensions (hopefully quit much earlier from smallestMovePct)
- * @param inertiaC the particles' resistance to change, reasonable default
- * @param cognitiveC the cognitive component or introversion of the particle, reasonable default
- * @param socialC the social component or extroversion of the particle, reasonable default
+ * @param inertiaC the particles' resistance to change, reasonable default from published works
+ * @param cognitiveC the cognitive component or introversion of the particle, reasonable default from published works
+ * @param socialC the social component or extroversion of the particle, reasonable default from published works
  * @param smallestMovePct If the total velocity sq is less than this, assume stable and quit early
  */
 class PSOSwarm(
@@ -35,45 +36,45 @@ class PSOSwarm(
         Particle(function, inertiaC, cognitiveC, socialC)
     }
 
+    // To get a percent of wiggle to quit early
     private val totalSpaceSq = function.parameterBounds.map { it.endInclusive - it.start }.sumByDouble { it * it }
 
     fun getBest() = globalBest.getData()
 
-    override fun run() {
-        runBlocking(Dispatchers.IO) {
+    override fun run() = runBlocking(Dispatchers.Default) {
 
-            for (epoch in 0 until maxEpochs) {
-                // Bring everything up to date.
-                coroutineScope {
-                    particles.forEach { launch { it.updatePersonalBest() } }
+        for (epoch in 0 until maxEpochs) {
+            // Bring everything up to date.
+            coroutineScope {
+                particles.forEach { launch { it.updatePersonalBest() } }
+            }
+
+            // Potentially update new global best
+            particles
+                .filter { it.bestEval < globalLeastError }
+                .minBy { it.bestEval }?.let { newBest ->
+                    globalBest.set(newBest.bestPosition)
+                    globalLeastError = newBest.bestEval
                 }
 
-                // Potentially update new global best
-                particles
-                    .filter { it.bestEval < globalLeastError }
-                    .minBy { it.bestEval }?.let { newBest ->
-                        globalBest.set(newBest.bestPosition)
-                        globalLeastError = newBest.bestEval
-                    }
+            // Now everyone - move at the same time
+            coroutineScope {
+                particles.forEach { launch { it.updateVelocityAndPosition(globalBest) } }
+            }
 
-                // Now everyone - move at the same time
-                coroutineScope {
-                    particles.forEach { launch { it.updateVelocityAndPosition(globalBest) } }
-                }
+            val travelPct = particles.sumByDouble { it.velocity.magnitudeSq() } / totalSpaceSq
+            if (travelPct < smallestMovePct) {
+                LOG.debug { "Particles moved a very small pct, ending early after epoch $epoch" }
+                break
+            }
 
-                val travelPct = particles.sumByDouble { it.velocity.magnitudeSq() } / totalSpaceSq
-                if (travelPct < smallestMovePct) {
-                    LOG.debug { "Particles moved a very small pct, ending early after epoch $epoch" }
-                    break
-                }
-
-                if (epoch and epoch - 1 == 0) {
-                    LOG.debug { "epoch:$epoch, with ${particles.size} valid particles that traveled $travelPct. Best pos: $globalBest=$globalLeastError" }
-                }
+            if (epoch and epoch - 1 == 0) {
+                LOG.debug { "epoch:$epoch, with ${particles.size} valid particles that traveled $travelPct. Best pos: $globalBest=$globalLeastError" }
             }
         }
         LOG.info { "PSO GlobalBest: $globalBest" }
     }
+
 
     companion object {
         private val LOG = KotlinLogging.logger {}

@@ -1,5 +1,6 @@
 package info.benjaminhill.stats.pso
 
+import info.benjaminhill.stats.Vector
 import kotlin.random.Random
 
 /**
@@ -38,7 +39,7 @@ internal class Particle(
      * Update the personal best if the current evaluation is better.
      */
     fun updatePersonalBest() {
-        val currentEval = function.eval(position.getData())
+        val currentEval = function.eval(position)
         if (currentEval < bestEval) {
             bestPosition.set(position)
             bestEval = currentEval

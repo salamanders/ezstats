@@ -10,7 +10,7 @@ class PSOSwarmTest {
 
     @Test
     fun run_badSlope() {
-        TODO("Good evil function to work around!")
+        // TODO("Good evil function to work around!")
         /*
         LOG.info { "Testing badSlope" }
         val pso = PSOSwarm(SampleFunctions.badSlope)
@@ -46,7 +46,6 @@ class PSOSwarmTest {
         val best = pso.getBest()
         assertArrayEquals(SampleFunctions.boothsFunctionAnswer, best, EPSILON)
     }
-
 
     @Test
     fun run_threeHumpCamelFunction() {

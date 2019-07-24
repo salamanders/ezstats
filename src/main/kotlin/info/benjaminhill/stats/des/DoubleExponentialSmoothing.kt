@@ -2,6 +2,8 @@ package info.benjaminhill.stats.des
 
 import info.benjaminhill.stats.pso.OptimizableFunction
 import info.benjaminhill.stats.pso.PSOSwarm
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Based on https://geekprompt.github.io/Java-implementation-for-Double-Exponential-Smoothing-for-time-series-with-linear-trend/
@@ -74,8 +76,8 @@ class DoubleExponentialSmoothing(private val alpha: Float = 0.3f, private val be
             ) { (rawAlpha, rawBeta) ->
                 // Unsure if clamping here will mess with results.
                 // TBD if resetting is better, but that may not settle... maybe culling?
-                val alpha = Math.max(0.0, Math.min(1.0, rawAlpha)).toFloat()
-                val beta = Math.max(0.0, Math.min(1.0, rawBeta)).toFloat()
+                val alpha = max(0.0, min(1.0, rawAlpha)).toFloat()
+                val beta = max(0.0, min(1.0, rawBeta)).toFloat()
                 val des = DoubleExponentialSmoothing(alpha, beta)
                 var sumOfSquaredErrors = 0f
                 data.forEach { sample ->

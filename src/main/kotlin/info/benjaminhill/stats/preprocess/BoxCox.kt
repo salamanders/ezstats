@@ -1,10 +1,16 @@
-package info.benjaminhill.stats
+package info.benjaminhill.stats.preprocess
 
 
-import org.apache.commons.math3.optimization.GoalType
-import org.apache.commons.math3.optimization.univariate.BrentOptimizer
+import org.apache.commons.math3.optim.MaxEval
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType
+import org.apache.commons.math3.optim.univariate.BrentOptimizer
+import org.apache.commons.math3.optim.univariate.SearchInterval
+import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction
 import org.nield.kotlinstatistics.standardDeviation
 import java.util.*
+import kotlin.math.ln
+import kotlin.math.pow
+
 
 /**
  * Box Cox Transformation
@@ -17,14 +23,14 @@ object BoxCox {
     /**
      * Calculate a Box Cox Transformation for a given lambda
      *
-     * @param  data a List<Double> of time series data
+     * @param data a List<Double> of time series data
      * @param lam desired lambda for transformation
      * @return  Time series List<Double> with desired Box Cox transformation
      */
     fun transform(data: List<Double>, lam: Double = lambdaSearch(data)) = if (lam == 0.0) {
-        data.map { Math.log(it) }
+        data.map { ln(it) }
     } else {
-        data.map { (Math.pow(it, lam) - 1.0) / lam }
+        data.map { (it.pow(lam) - 1.0) / lam }
     }
 
     /**
@@ -37,8 +43,14 @@ object BoxCox {
      * @return  Time series List<Double> with optimal Box Cox lambda transformation
      */
     fun lambdaSearch(data: List<Double>, lower: Double = -5.0, upper: Double = 5.0): Double {
-        val solver = BrentOptimizer(1e-10, 1e-14)
-        return solver.optimize(300, { x -> lambdaCV(data, x) }, GoalType.MINIMIZE, lower, upper).point
+        val optimizer = BrentOptimizer(1e-10, 1e-14)
+        val optimum = optimizer.optimize(
+            UnivariateObjectiveFunction { x -> lambdaCV(data, x) },
+            MaxEval(300),
+            GoalType.MINIMIZE,
+            SearchInterval(lower, upper)
+        )
+        return optimum.point
     }
 
     /**
@@ -63,7 +75,7 @@ object BoxCox {
             result.add(l.standardDeviation())
         }
         for (i in 0 until result.size) {
-            result[i] = result[i] / Math.pow(avg[i], 1 - lam)
+            result[i] = result[i] / avg[i].pow(1 - lam)
         }
         return result.standardDeviation() / result.average()
     }
