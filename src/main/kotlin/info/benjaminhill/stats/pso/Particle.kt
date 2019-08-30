@@ -20,7 +20,7 @@ internal class Particle(
 ) {
 
     /** Random location *starting* within the allowed domain */
-    val position: Vector = function.newRandomVector()
+    private val position: Vector = function.newRandomVector()
     val velocity: Vector = function.newZeroVector()
     val bestPosition: Vector = position.clone()
 
