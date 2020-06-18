@@ -8,7 +8,7 @@ package info.benjaminhill.stats
  * Mutable from operator functions only.
  * Like a DataArray but with some helpers
  */
-class Vector(len: Int) {
+open class Vector(len: Int) {
 
     private val data: DoubleArray = DoubleArray(len)
 
