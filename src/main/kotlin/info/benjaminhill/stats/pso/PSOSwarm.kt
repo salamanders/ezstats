@@ -18,13 +18,13 @@ import mu.KotlinLogging
  * @param smallestMovePct If the total velocity sq is less than this, assume stable and quit early
  */
 class PSOSwarm(
-    private val function: OptimizableFunction,
-    private val numOfParticles: Int = function.parameterBounds.size * 5 + 10,
-    private val maxEpochs: Int = 1_000 * function.parameterBounds.size,
-    inertiaC: Double = 0.729844,
-    cognitiveC: Double = 1.496180,
-    socialC: Double = 1.496180,
-    private val smallestMovePct: Double = 1E-20
+        private val function: OptimizableFunction,
+        private val numOfParticles: Int = function.parameterBounds.size * 5 + 10,
+        private val maxEpochs: Int = 1_000 * function.parameterBounds.size,
+        inertiaC: Double = 0.729844,
+        cognitiveC: Double = 1.496180,
+        socialC: Double = 1.496180,
+        private val smallestMovePct: Double = 1E-20
 ) : Runnable {
 
     // Position and output (no velocity)
@@ -51,11 +51,11 @@ class PSOSwarm(
 
             // Potentially update new global best
             particles
-                .filter { it.bestEval < globalLeastError }
-                .minBy { it.bestEval }?.let { newBest ->
-                    globalBest.set(newBest.bestPosition)
-                    globalLeastError = newBest.bestEval
-                }
+                    .filter { it.bestEval < globalLeastError }
+                    .minBy { it.bestEval }?.let { newBest ->
+                        globalBest.set(newBest.bestPosition)
+                        globalLeastError = newBest.bestEval
+                    }
 
             // Now everyone - move at the same time
             coroutineScope {

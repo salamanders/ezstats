@@ -1,3 +1,5 @@
+@file:Suppress("PropertyName")
+
 package info.benjaminhill.stats
 
 /**

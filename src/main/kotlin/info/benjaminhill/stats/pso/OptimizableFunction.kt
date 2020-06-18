@@ -45,7 +45,7 @@ open class OptimizableFunction(
     internal fun newZeroVector(): Vector = Vector(parameterBounds.size)
 
     internal fun newRandomVector(): Vector = newZeroVector().also {
-        it.set(*(0 until parameterBounds.size).map { i ->
+        it.set(*(parameterBounds.indices).map { i ->
             Random.nextDouble() * (parameterBounds[i].endInclusive - parameterBounds[i].start) - parameterBounds[i].start
         }.toDoubleArray())
     }

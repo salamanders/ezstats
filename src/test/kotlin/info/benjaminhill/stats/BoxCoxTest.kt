@@ -2,10 +2,9 @@ package info.benjaminhill.stats
 
 import info.benjaminhill.stats.preprocess.BoxCox
 import info.benjaminhill.stats.preprocess.boxCox
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import kotlin.test.Test
-
+import org.junit.Assert
+import org.junit.Test
+import kotlin.test.assertNotNull
 
 class BoxCoxTest {
     private val inputs =
@@ -14,7 +13,7 @@ class BoxCoxTest {
     @Test
     fun run_lambdaSearch() {
         val lambda = BoxCox.lambdaSearch(inputs)
-        assertEquals(0.929429, lambda, 0.0001)
+        Assert.assertEquals(0.929429, lambda, 0.0001)
     }
 
     @Test
@@ -22,8 +21,8 @@ class BoxCoxTest {
         val outputs = inputs.boxCox()
         val max = outputs.withIndex().maxBy { it.value }
         assertNotNull(max)
-        assertEquals(max!!.value, 17.955453640127647, 0.001)
-        assertEquals(max.index, 16)
+        Assert.assertEquals(max.value, 17.955453640127647, 0.001)
+        Assert.assertEquals(max.index, 16)
     }
 
 }

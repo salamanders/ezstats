@@ -60,7 +60,7 @@ fun List<Double>.smooth7(iterations: Int = 1): List<Double> {
 
     return source.indices.map { idx ->
         kernel.map { (k, v) ->
-            val offset = if (idx + k in 0 until source.size) {
+            val offset = if (idx + k in source.indices) {
                 idx + k
             } else {
                 idx + -k
