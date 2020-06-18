@@ -45,10 +45,10 @@ object BoxCox {
     fun lambdaSearch(data: List<Double>, lower: Double = -5.0, upper: Double = 5.0): Double {
         val optimizer = BrentOptimizer(1e-10, 1e-14)
         val optimum = optimizer.optimize(
-            UnivariateObjectiveFunction { x -> lambdaCV(data, x) },
-            MaxEval(300),
-            GoalType.MINIMIZE,
-            SearchInterval(lower, upper)
+                UnivariateObjectiveFunction { x -> lambdaCV(data, x) },
+                MaxEval(300),
+                GoalType.MINIMIZE,
+                SearchInterval(lower, upper)
         )
         return optimum.point
     }

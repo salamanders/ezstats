@@ -15,16 +15,16 @@ import kotlin.random.Random
  * @param f function to evaluate.  Will be passed the proper number of parameters.  Outputs error for each "goal" (often one)
  */
 open class OptimizableFunction(
-    val parameterBounds: Array<ClosedFloatingPointRange<Double>>,
-    private val f: (data: Vector) -> Double
+        val parameterBounds: Array<ClosedFloatingPointRange<Double>>,
+        private val f: (data: Vector) -> Double
 ) {
     /** Default to -100..100 bounds */
     constructor(
-        numParameters: Int,
-        f: (data: Vector) -> Double
+            numParameters: Int,
+            f: (data: Vector) -> Double
     ) : this(Array(numParameters) { (-100.0).rangeTo(100.0) }, f)
 
-    private fun validate(params: Vector): Boolean {
+    fun validate(params: Vector): Boolean {
         params.forEachIndexed { idx, v ->
             if (v !in parameterBounds[idx]) {
                 return false
@@ -36,17 +36,20 @@ open class OptimizableFunction(
     fun eval(params: Vector): Double {
         require(params.size == parameterBounds.size)
         // TODO: curve the error as you get near a boundary
-        if (!validate(params)) {
+        return if (!validate(params)) {
             Double.POSITIVE_INFINITY
+        } else {
+            f(params)
         }
-        return f(params)
     }
 
     internal fun newZeroVector(): Vector = Vector(parameterBounds.size)
 
-    internal fun newRandomVector(): Vector = newZeroVector().also {
-        it.set(*(parameterBounds.indices).map { i ->
-            Random.nextDouble() * (parameterBounds[i].endInclusive - parameterBounds[i].start) - parameterBounds[i].start
+    internal fun newRandomVector(): Vector {
+        val result = newZeroVector()
+        result.set(*parameterBounds.map { bounds ->
+            Random.nextDouble(bounds.start, bounds.endInclusive)
         }.toDoubleArray())
+        return result
     }
 }
