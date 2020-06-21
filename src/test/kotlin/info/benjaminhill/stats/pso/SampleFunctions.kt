@@ -1,5 +1,7 @@
 package info.benjaminhill.stats.pso
 
+import info.benjaminhill.stats.x
+import info.benjaminhill.stats.y
 import kotlin.math.cos
 import kotlin.math.exp
 import kotlin.math.pow

@@ -1,6 +1,6 @@
 package info.benjaminhill.stats.pso
 
-import info.benjaminhill.stats.Vector
+import info.benjaminhill.stats.*
 import kotlin.random.Random
 
 /**
@@ -13,15 +13,15 @@ import kotlin.random.Random
  * @param socialC amount to move towards global best
  */
 internal class Particle(
-        private val function: OptimizableFunction,
-        private val inertiaC: Double = 0.0,
-        private val cognitiveC: Double = 0.0,
-        private val socialC: Double = 0.0
+    private val function: OptimizableFunction,
+    private val inertiaC: Double = 0.0,
+    private val cognitiveC: Double = 0.0,
+    private val socialC: Double = 0.0
 ) {
 
     /** Random location *starting* within the allowed domain */
     private val position: Vector = function.newRandomVector().also {
-        require(function.validate(it)) { "Starting in an invalid pose! ${it.getData().joinToString()} bounds:${function.parameterBounds.joinToString()}" }
+        require(function.validate(it)) { "Starting in an invalid pose! ${it.joinToString()} bounds:${function.parameterBounds.joinToString()}" }
     }
     val velocity: Vector = function.newZeroVector()
     val bestPosition: Vector = position.clone()
@@ -43,7 +43,7 @@ internal class Particle(
     fun updatePersonalBest() {
         val currentEval = function.eval(position)
         if (currentEval < bestEval) {
-            bestPosition.set(position)
+            bestPosition.copy(position)
             bestEval = currentEval
         }
     }
@@ -75,7 +75,6 @@ internal class Particle(
         // Time to move
         this.position += velocity
     }
-
 
     override fun toString(): String = "{pos:$position, v:$velocity, bestPos:$bestPosition, bestEval:$bestEval}"
 }

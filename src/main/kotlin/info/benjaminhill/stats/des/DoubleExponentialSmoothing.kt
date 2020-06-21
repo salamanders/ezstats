@@ -57,7 +57,7 @@ class DoubleExponentialSmoothing(private val alpha: Float = 0.3f, private val be
      * Default to predict what is about to happen.  Set to pct since last time step.
      */
     fun get(pctBetweenSamples: Float = 1f): Float =
-            (1 - pctBetweenSamples) * smoothedData + pctBetweenSamples * getNextPredicted()
+        (1 - pctBetweenSamples) * smoothedData + pctBetweenSamples * getNextPredicted()
 
     private fun getNextPredicted() = level + trend
 
@@ -69,10 +69,10 @@ class DoubleExponentialSmoothing(private val alpha: Float = 0.3f, private val be
         fun estimateAlphaBeta(data: DoubleArray): Pair<Double, Double> {
 
             val f = OptimizableFunction(
-                    arrayOf(
-                            (0.0).rangeTo(1.0),
-                            (0.0).rangeTo(1.0)
-                    )
+                arrayOf(
+                    (0.0).rangeTo(1.0),
+                    (0.0).rangeTo(1.0)
+                )
             ) { (rawAlpha, rawBeta) ->
                 // Unsure if clamping here will mess with results.
                 // TBD if resetting is better, but that may not settle... maybe culling?
@@ -92,8 +92,8 @@ class DoubleExponentialSmoothing(private val alpha: Float = 0.3f, private val be
             }
 
             val desPsoCalibration = PSOSwarm(
-                    function = f,
-                    smallestMovePct = 1E-15
+                function = f,
+                smallestMovePct = 1E-15
             )
             desPsoCalibration.run()
 

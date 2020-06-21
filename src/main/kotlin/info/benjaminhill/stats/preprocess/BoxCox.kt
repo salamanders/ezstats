@@ -1,11 +1,11 @@
 package info.benjaminhill.stats.preprocess
 
 
-import org.apache.commons.math3.optim.MaxEval
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType
-import org.apache.commons.math3.optim.univariate.BrentOptimizer
-import org.apache.commons.math3.optim.univariate.SearchInterval
-import org.apache.commons.math3.optim.univariate.UnivariateObjectiveFunction
+import org.apache.commons.math4.optim.MaxEval
+import org.apache.commons.math4.optim.nonlinear.scalar.GoalType
+import org.apache.commons.math4.optim.univariate.BrentOptimizer
+import org.apache.commons.math4.optim.univariate.SearchInterval
+import org.apache.commons.math4.optim.univariate.UnivariateObjectiveFunction
 import org.nield.kotlinstatistics.standardDeviation
 import java.util.*
 import kotlin.math.ln
@@ -45,10 +45,10 @@ object BoxCox {
     fun lambdaSearch(data: List<Double>, lower: Double = -5.0, upper: Double = 5.0): Double {
         val optimizer = BrentOptimizer(1e-10, 1e-14)
         val optimum = optimizer.optimize(
-                UnivariateObjectiveFunction { x -> lambdaCV(data, x) },
-                MaxEval(300),
-                GoalType.MINIMIZE,
-                SearchInterval(lower, upper)
+            UnivariateObjectiveFunction { x -> lambdaCV(data, x) },
+            MaxEval(300),
+            GoalType.MINIMIZE,
+            SearchInterval(lower, upper)
         )
         return optimum.point
     }

@@ -58,7 +58,7 @@ class PSOSwarmTest {
 
     companion object {
         private val LOG = KotlinLogging.logger {}
-        const val EPSILON = 0.0001
+        const val EPSILON = 0.0002
     }
 
 }

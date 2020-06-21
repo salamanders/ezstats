@@ -43,13 +43,13 @@ fun List<Double>.smooth7(iterations: Int = 1): List<Double> {
     require(iterations >= 1)
 
     val kernel = mapOf(
-            -3 to .006,
-            -2 to .061,
-            -1 to .242,
-            0 to .382,
-            1 to .242,
-            2 to .061,
-            3 to .006
+        -3 to .006,
+        -2 to .061,
+        -1 to .242,
+        0 to .382,
+        1 to .242,
+        2 to .061,
+        3 to .006
     )
 
     val source = if (iterations > 1) {
