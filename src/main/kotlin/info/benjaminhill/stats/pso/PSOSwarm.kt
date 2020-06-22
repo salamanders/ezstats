@@ -80,6 +80,17 @@ class PSOSwarm(
 
     companion object {
         private val LOG = KotlinLogging.logger {}
+
+        /** Optimize (minimize) a single value function */
+        fun minimize(
+            range: ClosedFloatingPointRange<Double> = (-1000.0).rangeTo(1000.0),
+            f: (input: Double) -> Double
+        ): Double {
+            val optimizableFunction = OptimizableFunction(arrayOf(range)) { vector -> f(vector[0]) }
+            val pso = PSOSwarm(optimizableFunction)
+            pso.run()
+            return pso.getBest()[0]
+        }
     }
 }
 
