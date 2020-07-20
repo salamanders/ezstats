@@ -17,8 +17,8 @@ fun List<Double>.coercePercentile(pct: Double = 0.05): List<Double> {
 /** Linear remap to range */
 fun List<Double>.normalizeToRange(min: Double = 0.0, max: Double = 1.0): List<Double> {
     require(isNotEmpty())
-    val currentMin = min()!!
-    val currentMax = max()!!
+    val currentMin = minOrNull()!!
+    val currentMax = maxOrNull()!!
     if (currentMin == currentMax) {
         return this.toList()
     }
@@ -31,7 +31,7 @@ fun List<Double>.normalizeToRange(min: Double = 0.0, max: Double = 1.0): List<Do
 fun List<Double>.histogram(buckets: Int = 11): IntArray {
     require(isNotEmpty())
     forEach { require(it >= 0.0) { "This histogram requires positive numbers: $it" } }
-    val max = max()!!
+    val max = maxOrNull()!!
     val result = IntArray(buckets)
     forEach {
         result[(it / max * buckets).toInt().coerceAtMost(buckets - 1)]++

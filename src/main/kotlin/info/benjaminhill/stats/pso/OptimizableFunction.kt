@@ -1,6 +1,6 @@
 package info.benjaminhill.stats.pso
 
-import info.benjaminhill.stats.Vector
+import org.apache.commons.math4.linear.ArrayRealVector
 import kotlin.random.Random
 
 /**
@@ -16,25 +16,25 @@ import kotlin.random.Random
  */
 open class OptimizableFunction(
     val parameterBounds: Array<ClosedFloatingPointRange<Double>>,
-    private val f: (data: Vector) -> Double
+    private val f: (data: ArrayRealVector) -> Double
 ) {
     /** Default to -100..100 bounds */
     constructor(
         numParameters: Int,
-        f: (data: Vector) -> Double
+        f: (data: ArrayRealVector) -> Double
     ) : this(Array(numParameters) { (-100.0).rangeTo(100.0) }, f)
 
-    fun validate(params: Vector): Boolean {
-        params.forEachIndexed { idx, v ->
-            if (v !in parameterBounds[idx]) {
+    fun validate(params: ArrayRealVector): Boolean {
+        for(idx in params.dataRef.indices) {
+            if (params.dataRef[idx] !in parameterBounds[idx]) {
                 return false
             }
         }
         return true
     }
 
-    fun eval(params: Vector): Double {
-        require(params.size == parameterBounds.size)
+    fun eval(params: ArrayRealVector): Double {
+        require(params.dimension == parameterBounds.size)
         // TODO: curve the error as you get near a boundary
         return if (!validate(params)) {
             Double.POSITIVE_INFINITY
@@ -43,9 +43,9 @@ open class OptimizableFunction(
         }
     }
 
-    internal fun newZeroVector(): Vector = Vector(parameterBounds.size)
+    internal fun newZeroVector(): ArrayRealVector = ArrayRealVector(parameterBounds.size)
 
-    internal fun newRandomVector(): Vector = parameterBounds.map { bounds ->
+    internal fun newRandomVector(): ArrayRealVector = ArrayRealVector(parameterBounds.map { bounds ->
         Random.nextDouble(bounds.start, bounds.endInclusive)
-    }.toDoubleArray()
+    }.toDoubleArray())
 }

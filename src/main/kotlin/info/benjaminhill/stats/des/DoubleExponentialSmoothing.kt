@@ -1,5 +1,7 @@
 package info.benjaminhill.stats.des
 
+import info.benjaminhill.stats.component1
+import info.benjaminhill.stats.component2
 import info.benjaminhill.stats.pso.OptimizableFunction
 import info.benjaminhill.stats.pso.PSOSwarm
 import kotlin.math.max
@@ -104,4 +106,5 @@ class DoubleExponentialSmoothing(private val alpha: Float = 0.3f, private val be
 
     }
 }
+
 

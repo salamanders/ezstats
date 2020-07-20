@@ -1,13 +1,11 @@
 package info.benjaminhill.stats.pso
 
-import info.benjaminhill.stats.Vector
-import info.benjaminhill.stats.copy
-import info.benjaminhill.stats.magnitudeSq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
+import kotlin.math.sqrt
 
 /**
  * Represents a swarm of particles from the Particle PSOSwarm Optimization algorithm.
@@ -30,7 +28,7 @@ class PSOSwarm(
 ) : Runnable {
 
     // Position and output (no velocity)
-    private val globalBest: Vector = function.newZeroVector()
+    private val globalBest = function.newZeroVector()
     private var globalLeastError = Double.MAX_VALUE
 
     // Create a set of particles, each with random starting positions.
@@ -39,9 +37,9 @@ class PSOSwarm(
     }
 
     // To get a percent of wiggle to quit early
-    private val totalSpaceSq = function.parameterBounds.map { it.endInclusive - it.start }.sumByDouble { it * it }
+    private val totalSpace = sqrt(function.parameterBounds.map { it.endInclusive - it.start }.sumByDouble { it * it })
 
-    fun getBest() = globalBest.clone()
+    fun getBest(): DoubleArray = globalBest.copy().dataRef
 
     override fun run() = runBlocking(Dispatchers.Default) {
 
@@ -54,8 +52,8 @@ class PSOSwarm(
             // Potentially update new global best
             particles
                 .filter { it.bestEval < globalLeastError }
-                .minBy { it.bestEval }?.let { newBest ->
-                    globalBest.copy(newBest.bestPosition)
+                .minByOrNull { it.bestEval }?.let { newBest ->
+                    globalBest.setSubVector(0, newBest.bestPosition)
                     globalLeastError = newBest.bestEval
                 }
 
@@ -64,7 +62,7 @@ class PSOSwarm(
                 particles.forEach { launch { it.updateVelocityAndPosition(globalBest) } }
             }
 
-            val travelPct = particles.sumByDouble { it.velocity.magnitudeSq() } / totalSpaceSq
+            val travelPct = particles.sumByDouble { it.velocity.norm } / totalSpace
             if (travelPct < smallestMovePct) {
                 LOG.debug { "Particles moved a very small pct, ending early after epoch $epoch" }
                 break
@@ -86,7 +84,7 @@ class PSOSwarm(
             range: ClosedFloatingPointRange<Double> = (-1000.0).rangeTo(1000.0),
             f: (input: Double) -> Double
         ): Double {
-            val optimizableFunction = OptimizableFunction(arrayOf(range)) { vector -> f(vector[0]) }
+            val optimizableFunction = OptimizableFunction(arrayOf(range)) { vector -> f(vector.dataRef[0]) }
             val pso = PSOSwarm(optimizableFunction)
             pso.run()
             return pso.getBest()[0]
