@@ -9,6 +9,7 @@ import kotlin.math.sqrt
 
 internal object SampleFunctions {
 
+    /*
     val badSlope by lazy {
         OptimizableFunction(
             parameterBounds = arrayOf(
@@ -20,6 +21,7 @@ internal object SampleFunctions {
         }
     }
     val badSlopeAnswer = doubleArrayOf(-5.0, -6.0)
+     */
 
     /**
      * Calculate the result of (x^4)-2(x^3).

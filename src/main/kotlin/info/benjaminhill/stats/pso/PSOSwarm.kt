@@ -7,6 +7,8 @@ import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import kotlin.math.sqrt
 
+private val logger = KotlinLogging.logger {}
+
 /**
  * Represents a swarm of particles from the Particle PSOSwarm Optimization algorithm.
  * @param function the OptimizableFunction to find the minimum *starting* within the parameterBounds
@@ -64,21 +66,19 @@ class PSOSwarm(
 
             val travelPct = particles.sumByDouble { it.velocity.norm } / totalSpace
             if (travelPct < smallestMovePct) {
-                LOG.debug { "Particles moved a very small pct, ending early after epoch $epoch" }
+                logger.debug { "Particles moved a very small pct, ending early after epoch $epoch" }
                 break
             }
 
             if (epoch and epoch - 1 == 0) {
-                LOG.debug { "epoch:$epoch, with ${particles.size} valid particles that traveled $travelPct. Best pos: $globalBest=$globalLeastError" }
+                logger.debug { "epoch:$epoch, with ${particles.size} valid particles that traveled $travelPct. Best pos: $globalBest=$globalLeastError" }
             }
         }
-        LOG.info { "PSO GlobalBest: $globalBest" }
+        logger.info { "PSO GlobalBest: $globalBest" }
     }
 
 
     companion object {
-        private val LOG = KotlinLogging.logger {}
-
         /** Optimize (minimize) a single value function */
         fun minimize(
             range: ClosedFloatingPointRange<Double> = (-1000.0).rangeTo(1000.0),
