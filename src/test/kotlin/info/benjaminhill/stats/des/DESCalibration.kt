@@ -22,7 +22,7 @@ class DESCalibrationTest {
         Assert.assertEquals(0.2, beta, 0.1)
 
         val standardDelta = DoubleExponentialSmoothing().let { model ->
-            val sumDelta = testData.sumByDouble {
+            val sumDelta = testData.sumOf {
                 val estimated = model.get()
                 model.add(it.toFloat())
                 if (estimated.isFinite()) {
@@ -37,7 +37,7 @@ class DESCalibrationTest {
 
 
         val optimalDelta = DoubleExponentialSmoothing(alpha = alpha.toFloat(), beta = beta.toFloat()).let { model ->
-            val sumDelta = testData.sumByDouble {
+            val sumDelta = testData.sumOf {
                 val estimated = model.get()
                 model.add(it.toFloat())
                 if (estimated.isFinite()) {

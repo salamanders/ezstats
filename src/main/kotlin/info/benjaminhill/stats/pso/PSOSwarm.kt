@@ -39,7 +39,7 @@ class PSOSwarm(
     }
 
     // To get a percent of wiggle to quit early
-    private val totalSpace = sqrt(function.parameterBounds.map { it.endInclusive - it.start }.sumByDouble { it * it })
+    private val totalSpace = sqrt(function.parameterBounds.map { it.endInclusive - it.start }.sumOf { it * it })
 
     fun getBest(): DoubleArray = globalBest.copy().dataRef
 
@@ -64,7 +64,7 @@ class PSOSwarm(
                 particles.forEach { launch { it.updateVelocityAndPosition(globalBest) } }
             }
 
-            val travelPct = particles.sumByDouble { it.velocity.norm } / totalSpace
+            val travelPct = particles.sumOf { it.velocity.norm } / totalSpace
             if (travelPct < smallestMovePct) {
                 logger.debug { "Particles moved a very small pct, ending early after epoch $epoch" }
                 break
