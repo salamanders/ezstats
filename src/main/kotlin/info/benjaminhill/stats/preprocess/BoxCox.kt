@@ -78,7 +78,9 @@ object BoxCox {
         }
         return result.standardDeviation() / result.average()
     }
+
+    fun List<Double>.boxCox(): List<Double> = transform(this)
 }
 
 
-fun List<Double>.boxCox(): List<Double> = BoxCox.transform(this)
+

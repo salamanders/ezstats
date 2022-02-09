@@ -1,7 +1,7 @@
 package info.benjaminhill.stats
 
 import info.benjaminhill.stats.preprocess.BoxCox
-import info.benjaminhill.stats.preprocess.boxCox
+import info.benjaminhill.stats.preprocess.BoxCox.boxCox
 import org.junit.Assert
 import org.junit.Test
 

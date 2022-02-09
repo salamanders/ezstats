@@ -1,6 +1,6 @@
 package info.benjaminhill.stats.pso
 
-import mu.KotlinLogging
+import mu.KLoggable
 import org.junit.Assert
 import org.junit.Assert.assertArrayEquals
 import kotlin.test.Test
@@ -12,7 +12,7 @@ class PSOSwarmTest {
     fun run_badSlope() {
         // TODO("Good evil function to work around!")
         /*
-        LOG.info { "Testing badSlope" }
+        logger.info { "Testing badSlope" }
         val pso = PSOSwarm(SampleFunctions.badSlope)
         pso.run()
         val best = pso.getBest()
@@ -22,7 +22,7 @@ class PSOSwarmTest {
 
     @Test
     fun run_functionA() {
-        LOG.info { "Testing functionA" }
+        logger.info { "Testing functionA" }
         val pso = PSOSwarm(SampleFunctions.functionA)
         pso.run()
         val best = pso.getBest()
@@ -31,7 +31,7 @@ class PSOSwarmTest {
 
     @Test
     fun run_ackleysFunction() {
-        LOG.info { "Testing ackleysFunction" }
+        logger.info { "Testing ackleysFunction" }
         val pso = PSOSwarm(SampleFunctions.ackleysFunction)
         pso.run()
         val best = pso.getBest()
@@ -40,7 +40,7 @@ class PSOSwarmTest {
 
     @Test
     fun run_boothsFunction() {
-        LOG.info { "Testing boothsFunction" }
+        logger.info { "Testing boothsFunction" }
         val pso = PSOSwarm(SampleFunctions.boothsFunction)
         pso.run()
         val best = pso.getBest()
@@ -49,7 +49,7 @@ class PSOSwarmTest {
 
     @Test
     fun run_threeHumpCamelFunction() {
-        LOG.info { "Testing threeHumpCamelFunction" }
+        logger.info { "Testing threeHumpCamelFunction" }
         val pso = PSOSwarm(SampleFunctions.threeHumpCamelFunction)
         pso.run()
         val best = pso.getBest()
@@ -58,13 +58,13 @@ class PSOSwarmTest {
 
     @Test
     fun run_minimize() {
-        LOG.info { "Testing minimize" }
+        logger.info { "Testing minimize" }
         val minX = PSOSwarm.minimize { x -> (x + 5) * (x + 5) - 7 }
         Assert.assertEquals(-5.0, minX, EPSILON)
     }
 
-    companion object {
-        private val LOG = KotlinLogging.logger {}
+    companion object : KLoggable {
+        override val logger = logger()
         const val EPSILON = 0.0002
     }
 

@@ -1,10 +1,8 @@
 package info.benjaminhill.stats.pso
 
 import kotlinx.coroutines.*
-import mu.KotlinLogging
+import mu.KLoggable
 import kotlin.math.sqrt
-
-private val logger = KotlinLogging.logger {}
 
 /**
  * Represents a swarm of particles from the Particle PSOSwarm Optimization algorithm.
@@ -77,7 +75,9 @@ class PSOSwarm(
     }
 
 
-    companion object {
+    companion object : KLoggable {
+        override val logger = logger()
+
         /** Optimize (minimize) a single value function */
         fun minimize(
             range: ClosedFloatingPointRange<Double> = (-1000.0).rangeTo(1000.0),
