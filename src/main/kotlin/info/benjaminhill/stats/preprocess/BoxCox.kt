@@ -7,7 +7,6 @@ import org.apache.commons.math4.optim.univariate.BrentOptimizer
 import org.apache.commons.math4.optim.univariate.SearchInterval
 import org.apache.commons.math4.optim.univariate.UnivariateObjectiveFunction
 import org.nield.kotlinstatistics.standardDeviation
-import java.util.*
 import kotlin.math.ln
 import kotlin.math.pow
 

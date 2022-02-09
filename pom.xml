@@ -14,15 +14,15 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.5.20</kotlin.version>
-        <kotlin.coroutine.version>1.5.0-native-mt</kotlin.coroutine.version>
+        <kotlin.version>1.6.10</kotlin.version>
 
         <kotlin.code.style>official</kotlin.code.style>
 
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
-        <kotlin.compiler.languageVersion>1.5</kotlin.compiler.languageVersion>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+        <kotlin.compiler.languageVersion>1.6</kotlin.compiler.languageVersion>
+        <kotlin.coroutine.version>1.6.0-native-mt</kotlin.coroutine.version>
 
         <junit.version>5.8.0-M1</junit.version>
     </properties>
@@ -35,63 +35,12 @@
         </repository>
 
         <repository>
-            <id>bintray.kotlin.eap</id>
-            <name>Bintray Kotlin EAP Repository</name>
-            <url>https://dl.bintray.com/kotlin/kotlin-eap</url>
-        </repository>
-
-        <repository>
-            <id>bintray.kotlin.dev</id>
-            <name>Bintray Kotlin DEV Repository</name>
-            <url>https://dl.bintray.com/kotlin/kotlin-dev</url>
-        </repository>
-
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-kotlin-kotlinx</id>
-            <name>bintray</name>
-            <url>https://kotlin.bintray.com/kotlinx</url>
-        </repository>
-
-        <repository>
             <id>apache</id>
             <name>apache_snapshots</name>
             <url>https://repository.apache.org/snapshots</url>
         </repository>
 
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray.kotlin.eap</id>
-            <name>Bintray Kotlin EAP Repository</name>
-            <url>https://dl.bintray.com/kotlin/kotlin-eap</url>
-        </pluginRepository>
-
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-kotlin-kotlinx</id>
-            <name>bintray-plugins</name>
-            <url>https://kotlin.bintray.com/kotlinx</url>
-        </pluginRepository>
-
-        <pluginRepository>
-            <id>bintray.kotlin.dev</id>
-            <name>Bintray Kotlin DEV Repository</name>
-            <url>https://dl.bintray.com/kotlin/kotlin-dev</url>
-        </pluginRepository>
-
-    </pluginRepositories>
 
     <distributionManagement>
         <repository>
@@ -137,7 +86,7 @@
         <dependency>
             <groupId>com.github.salamanders</groupId>
             <artifactId>utils</artifactId>
-            <version>4886d69d3a</version>
+            <version>153ca719bf</version>
         </dependency>
 
     </dependencies>

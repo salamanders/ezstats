@@ -1,9 +1,6 @@
 package info.benjaminhill.stats.pso
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import mu.KotlinLogging
 import kotlin.math.sqrt
 
@@ -26,7 +23,8 @@ class PSOSwarm(
     inertiaC: Double = 0.729844,
     cognitiveC: Double = 1.496180,
     socialC: Double = 1.496180,
-    private val smallestMovePct: Double = 1E-10
+    private val smallestMovePct: Double = 1E-10,
+    private val parallelism: Int = 16
 ) : Runnable {
 
     // Position and output (no velocity)
@@ -43,7 +41,8 @@ class PSOSwarm(
 
     fun getBest(): DoubleArray = globalBest.copy().dataRef
 
-    override fun run() = runBlocking(Dispatchers.Default) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun run() = runBlocking(Dispatchers.IO.limitedParallelism(parallelism)) {
 
         for (epoch in 0 until maxEpochs) {
             // Bring everything up to date.
