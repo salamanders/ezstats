@@ -8,4 +8,13 @@
 Then get fancy by using PSO to pre-calculate your custom DES parameters!
 
 * Origin: Lego Mindstorms robot sensor helpers.
-* Uses: Kotlin 1.6 with coroutines, Apache Commons Math4
+* Uses: Kotlin 1.6 with coroutines, Apache Commons Math4 Snapshot
+
+
+## Dev Misc
+
+```bash
+mvn versions:display-dependency-updates
+mvn versions:display-plugin-updates
+mvn versions:display-property-updates
+```
