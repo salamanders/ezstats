@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.github.salamanders</groupId>
             <artifactId>utils</artifactId>
-            <version>153ca719bf</version>
+            <version>10e96cd224</version>
         </dependency>
 
     </dependencies>
@@ -138,7 +138,7 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.8</version>
+                                    <version>3.6</version>
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
