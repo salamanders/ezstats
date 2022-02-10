@@ -2,6 +2,7 @@ package info.benjaminhill.stats.pso
 
 import kotlinx.coroutines.*
 import mu.KLoggable
+import org.apache.commons.math4.linear.ArrayRealVector
 import kotlin.math.sqrt
 
 /**
@@ -26,8 +27,9 @@ class PSOSwarm(
 ) : Runnable {
 
     // Position and output (no velocity)
-    private val globalBest = function.newZeroVector()
-    private var globalLeastError = Double.MAX_VALUE
+    private val globalBest: ArrayRealVector = function.newZeroVector()
+    var globalLeastError = Double.MAX_VALUE
+        private set
 
     // Create a set of particles, each with random starting positions.
     private val particles = Array(numOfParticles) {
@@ -71,7 +73,7 @@ class PSOSwarm(
                 logger.debug { "epoch:$epoch, with ${particles.size} valid particles that traveled $travelPct. Best pos: $globalBest=$globalLeastError" }
             }
         }
-        logger.info { "PSO GlobalBest: $globalBest" }
+        logger.debug { "PSO GlobalBest: $globalBest" }
     }
 
 
