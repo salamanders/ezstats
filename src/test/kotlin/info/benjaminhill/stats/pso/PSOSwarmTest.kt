@@ -1,9 +1,10 @@
 package info.benjaminhill.stats.pso
 
 import mu.KLoggable
-import org.junit.Assert
-import org.junit.Assert.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertArrayEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
+
 
 class PSOSwarmTest {
 
@@ -60,7 +61,7 @@ class PSOSwarmTest {
     fun run_minimize() {
         logger.info { "Testing minimize" }
         val minX = PSOSwarm.minimize { x -> (x + 5) * (x + 5) - 7 }
-        Assert.assertEquals(-5.0, minX, EPSILON)
+        assertEquals(-5.0, minX, EPSILON)
     }
 
     companion object : KLoggable {

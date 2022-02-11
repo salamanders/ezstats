@@ -2,8 +2,8 @@ package info.benjaminhill.stats
 
 import info.benjaminhill.stats.preprocess.BoxCox
 import info.benjaminhill.stats.preprocess.BoxCox.boxCox
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 class BoxCoxTest {
     private val inputs =
@@ -12,15 +12,15 @@ class BoxCoxTest {
     @Test
     fun run_lambdaSearch() {
         val lambda = BoxCox.lambdaSearch(inputs)
-        Assert.assertEquals(0.929429, lambda, 0.0001)
+        assertEquals(expected = 0.929429, actual = lambda, absoluteTolerance = 0.0001)
     }
 
     @Test
     fun run_transform() {
         val outputs = inputs.boxCox()
         val max = outputs.withIndex().maxByOrNull { it.value }!!
-        Assert.assertEquals(max.value, 17.955453640127647, 0.001)
-        Assert.assertEquals(max.index, 16)
+        assertEquals(expected = 17.955453640127647, actual = max.value, absoluteTolerance = 0.001)
+        assertEquals(16, max.index)
     }
 
 }

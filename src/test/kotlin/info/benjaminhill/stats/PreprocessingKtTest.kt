@@ -4,8 +4,8 @@ import info.benjaminhill.stats.preprocess.coercePercentile
 import info.benjaminhill.stats.preprocess.histogram
 import info.benjaminhill.stats.preprocess.normalizeToRange
 import info.benjaminhill.stats.preprocess.smooth7
-import org.junit.Assert.assertArrayEquals
-import kotlin.test.Test
+import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Test
 
 class PreprocessingKtTest {
 

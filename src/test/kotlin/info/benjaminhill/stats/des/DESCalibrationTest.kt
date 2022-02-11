@@ -1,11 +1,10 @@
 package info.benjaminhill.stats.des
 
 import info.benjaminhill.stats.fakeSensorData
-import org.junit.Assert
 import kotlin.math.abs
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-
 
 /**
  * Determine optimal DES alpha-beta using PSO
@@ -18,8 +17,8 @@ class DESCalibrationTest {
             allData.toList().chunked((allData.size * 0.9).toInt()).map { it.toDoubleArray() }
         }
         val (alpha, beta) = DoubleExponentialSmoothing.estimateAlphaBeta(trainingData)
-        Assert.assertEquals(0.2, alpha, 0.1)
-        Assert.assertEquals(0.2, beta, 0.1)
+        assertEquals(0.2, alpha, 0.1)
+        assertEquals(0.2, beta, 0.1)
 
         val standardDelta = DoubleExponentialSmoothing().let { model ->
             val sumDelta = testData.sumOf {
