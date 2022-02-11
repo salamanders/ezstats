@@ -176,9 +176,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-### AndroidStudio Patch ###
-
-!/gradle/wrapper/gradle-wrapper.jar
 
 ### Eclipse ###
 
@@ -333,7 +330,6 @@ cmake-build-*/
 # Mobile Tools for Java (J2ME)
 
 # Package Files #
-*.jar
 *.nar
 *.zip
 *.tar.gz
