@@ -21,7 +21,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
     implementation("org.nield:kotlin-statistics:1.2.1")
     implementation("com.github.jcastro-inf:commons-math4:598edc1273")
-    implementation("com.github.salamanders:utils:35760e7462")
+    implementation("com.github.salamanders:utils:a9b1fd396a")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.21")
 
     implementation("com.github.jitpack:gradle-simple:1.0")
