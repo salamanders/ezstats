@@ -7,8 +7,6 @@ import kotlin.test.assertEquals
 
 
 class PSOSwarmTest {
-
-
     @Test
     fun run_badSlope() {
         // TODO("Good evil function to work around!")
@@ -20,6 +18,17 @@ class PSOSwarmTest {
         assertArrayEquals(SampleFunctions.badSlopeAnswer, best, 1.0)
         */
     }
+
+    @Test
+    fun testReset() {
+        logger.info { "Testing functionA Reset" }
+        val pso = PSOSwarm(SampleFunctions.functionA)
+        pso.run()
+        assertArrayEquals(SampleFunctions.functionAAnswer, pso.getBest(), EPSILON)
+        pso.run()
+        assertArrayEquals(SampleFunctions.functionAAnswer, pso.getBest(), EPSILON)
+    }
+
 
     @Test
     fun run_functionA() {

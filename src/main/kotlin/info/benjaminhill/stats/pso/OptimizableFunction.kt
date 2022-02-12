@@ -1,6 +1,5 @@
 package info.benjaminhill.stats.pso
 
-import org.apache.commons.math4.linear.ArrayRealVector
 import kotlin.random.Random
 
 /**
@@ -16,25 +15,20 @@ import kotlin.random.Random
  */
 open class OptimizableFunction(
     val parameterBounds: Array<ClosedFloatingPointRange<Double>>,
-    private val f: (data: ArrayRealVector) -> Double
+    private val f: (data: DoubleArray) -> Double
 ) {
     /** Default to -100..100 bounds */
     constructor(
         numParameters: Int,
-        f: (data: ArrayRealVector) -> Double
+        f: (data: DoubleArray) -> Double
     ) : this(Array(numParameters) { (-100.0).rangeTo(100.0) }, f)
 
-    fun validate(params: ArrayRealVector): Boolean {
-        for (idx in params.dataRef.indices) {
-            if (params.dataRef[idx] !in parameterBounds[idx]) {
-                return false
-            }
-        }
-        return true
-    }
+    /** Is the function within the allowed range? */
+    fun validate(params: DoubleArray): Boolean =
+        parameterBounds.indices.all { params[it] in parameterBounds[it] }
 
-    fun eval(params: ArrayRealVector): Double {
-        require(params.dimension == parameterBounds.size)
+    fun eval(params: DoubleArray): Double {
+        // require(params.size == parameterBounds.size)
         // TODO: curve the error as you get near a boundary
         return if (!validate(params)) {
             Double.POSITIVE_INFINITY
@@ -43,9 +37,9 @@ open class OptimizableFunction(
         }
     }
 
-    internal fun newZeroVector(): ArrayRealVector = ArrayRealVector(parameterBounds.size)
+    internal fun newZeroVector(): DoubleArray = DoubleArray(parameterBounds.size)
 
-    internal fun newRandomVector(): ArrayRealVector = ArrayRealVector(parameterBounds.map { bounds ->
-        Random.nextDouble(bounds.start, bounds.endInclusive)
-    }.toDoubleArray())
+    internal fun newRandomVector(): DoubleArray = DoubleArray(parameterBounds.size) { idx ->
+        Random.nextDouble(parameterBounds[idx].start, parameterBounds[idx].endInclusive)
+    }
 }

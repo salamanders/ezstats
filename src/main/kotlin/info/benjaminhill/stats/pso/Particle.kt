@@ -3,7 +3,6 @@ package info.benjaminhill.stats.pso
 import info.benjaminhill.stats.minusAssign
 import info.benjaminhill.stats.plusAssign
 import info.benjaminhill.stats.timesAssign
-import org.apache.commons.math4.linear.ArrayRealVector
 import kotlin.random.Random
 
 /**
@@ -23,11 +22,13 @@ internal class Particle(
 ) {
 
     /** Random location *starting* within the allowed domain */
-    private val position: ArrayRealVector = function.newRandomVector().also {
-        require(function.validate(it)) { "Starting in an invalid pose! ${it.dataRef.joinToString()} bounds:${function.parameterBounds.joinToString()}" }
-    }
-    val velocity: ArrayRealVector = function.newZeroVector()
-    val bestPosition: ArrayRealVector = position.copy()
+    private val position: DoubleArray = function.newZeroVector()
+    val velocity: DoubleArray = function.newZeroVector()
+    val bestPosition: DoubleArray = function.newZeroVector()
+
+    // Optimization: less new object creation
+    private val bestPositionCopy = function.newZeroVector()
+    private val globalBestPositionCopy = function.newZeroVector()
 
     /**
      * Current score of personal best solution (lower is better)
@@ -37,7 +38,16 @@ internal class Particle(
         private set
 
     init {
+        reset()
         updatePersonalBest()
+    }
+
+    fun reset() {
+        function.newRandomVector().copyInto(position)
+        position.copyInto(bestPosition)
+        velocity *= 0.0
+        bestEval = Double.MAX_VALUE
+        require(function.validate(position)) { "Starting in an invalid pose! ${position.joinToString()} bounds:${function.parameterBounds.joinToString()}" }
     }
 
     /**
@@ -46,32 +56,29 @@ internal class Particle(
     fun updatePersonalBest() {
         val currentEval = function.eval(position)
         if (currentEval < bestEval) {
-            bestPosition.setSubVector(0, position)
+            position.copyInto(bestPosition)
             bestEval = currentEval
         }
     }
 
-    // Optimization: less new object creation
-    private val bestPositionCopy = function.newZeroVector()
-    private val globalBestPositionCopy = function.newZeroVector()
 
     /**
      *
      * @param globalBestPosition + socialC move towards this
      */
-    fun updateVelocityAndPosition(globalBestPosition: ArrayRealVector) {
+    fun updateVelocityAndPosition(globalBestPosition: DoubleArray) {
         // Natural friction
         velocity *= inertiaC
 
         // Steer towards your own best
-        bestPositionCopy.setSubVector(0, bestPosition)
+        bestPosition.copyInto(bestPositionCopy)
         bestPositionCopy -= position
         bestPositionCopy *= cognitiveC
         bestPositionCopy *= Random.nextDouble()
         velocity += bestPositionCopy
 
         // Steer towards global best
-        globalBestPositionCopy.setSubVector(0, globalBestPosition)
+        globalBestPosition.copyInto(globalBestPositionCopy)
         globalBestPositionCopy -= position
         globalBestPositionCopy *= socialC
         globalBestPositionCopy *= Random.nextDouble()
@@ -83,3 +90,5 @@ internal class Particle(
 
     override fun toString(): String = "{pos:$position, v:$velocity, bestPos:$bestPosition, bestEval:$bestEval}"
 }
+
+

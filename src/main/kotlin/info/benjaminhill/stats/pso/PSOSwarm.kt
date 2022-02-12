@@ -1,8 +1,8 @@
 package info.benjaminhill.stats.pso
 
+import info.benjaminhill.stats.norm
 import kotlinx.coroutines.*
 import mu.KLoggable
-import org.apache.commons.math4.linear.ArrayRealVector
 import kotlin.math.sqrt
 
 /**
@@ -27,7 +27,7 @@ class PSOSwarm(
 ) : Runnable {
 
     // Position and output (no velocity)
-    private val globalBest: ArrayRealVector = function.newZeroVector()
+    private val globalBest: DoubleArray = function.newZeroVector()
     var globalLeastError = Double.MAX_VALUE
         private set
 
@@ -39,10 +39,13 @@ class PSOSwarm(
     // To get a percent of wiggle to quit early
     private val totalSpace = sqrt(function.parameterBounds.map { it.endInclusive - it.start }.sumOf { it * it })
 
-    fun getBest(): DoubleArray = globalBest.copy().dataRef
+    fun getBest(): DoubleArray = globalBest.clone()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun run() = runBlocking(Dispatchers.IO.limitedParallelism(parallelism)) {
+        particles.forEach { it.reset() }
+        function.newZeroVector().copyInto(globalBest)
+        globalLeastError = Double.MAX_VALUE
 
         for (epoch in 0 until maxEpochs) {
             // Bring everything up to date.
@@ -54,7 +57,7 @@ class PSOSwarm(
             particles
                 .filter { it.bestEval < globalLeastError }
                 .minByOrNull { it.bestEval }?.let { newBest ->
-                    globalBest.setSubVector(0, newBest.bestPosition)
+                    newBest.bestPosition.copyInto(globalBest)
                     globalLeastError = newBest.bestEval
                 }
 
@@ -85,7 +88,7 @@ class PSOSwarm(
             range: ClosedFloatingPointRange<Double> = (-1000.0).rangeTo(1000.0),
             f: (input: Double) -> Double
         ): Double {
-            val optimizableFunction = OptimizableFunction(arrayOf(range)) { vector -> f(vector.dataRef[0]) }
+            val optimizableFunction = OptimizableFunction(arrayOf(range)) { vector -> f(vector[0]) }
             val pso = PSOSwarm(optimizableFunction)
             pso.run()
             return pso.getBest()[0]

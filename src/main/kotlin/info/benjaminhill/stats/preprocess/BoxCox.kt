@@ -1,6 +1,5 @@
 package info.benjaminhill.stats.preprocess
 
-
 import org.apache.commons.math4.optim.MaxEval
 import org.apache.commons.math4.optim.nonlinear.scalar.GoalType
 import org.apache.commons.math4.optim.univariate.BrentOptimizer
@@ -81,6 +80,5 @@ object BoxCox {
 
     fun List<Double>.boxCox(): List<Double> = transform(this)
 }
-
 
 
